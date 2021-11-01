@@ -12,6 +12,8 @@ class Tabelas {
         nome_cliente VARCHAR(50) NOT NULL,
         nome_pet VARCHAR(20),
         servico VARCHAR(20) NOT NULL,
+        data_agendamento DATETIME,
+        data_atendimento DATETIME,
         status VARCHAR(20) NOT NULL,
         observacoes TEXT
       );
