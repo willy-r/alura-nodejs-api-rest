@@ -6,29 +6,72 @@ const conexao = require('../db/conexao');
  * aplicando regras de negócio quando necessário e tratandos os dados.
  */
 class Atendimento {
-  add(atendimento) {
-    atendimento = this._trataDados(atendimento);
+  add(atendimento, res) {
+    const atendimentoOuErro = this._trataDados(atendimento);
 
-    const query = 'INSERT INTO atendimento SET ?;';
+    if (atendimentoOuErro.existemErros) {
+      res.status(400).json(atendimentoOuErro.data);
+    } else {
+      const query = 'INSERT INTO atendimento SET ?;';
 
-    conexao.query(query, atendimento, (err, results) => {
-      if (err)
-        console.log(err);
-      else
-        console.log(results);
-    });
+      conexao.query(query, atendimentoOuErro.data, (err, results) => {
+        if (err) {
+          res.status(400).json(err);
+        } else {
+          res.status(201).json(results);
+        }
+      });
+    }
   }
-
+  
+  /**
+   * Trata os dados antes de enviar para o banco de dados, aplicando regras de negócio.
+   * Regras de negócio;
+   *   1. Data de agendamento tem que ser depois ou a mesma da data de atendimento (impossível agendar algo para o passado).
+   *   2. Precisa existir um nome, pelo menos um nome humano para identificação.
+   */
   _trataDados(atendimento) {
-    const dataAgendamento = moment().format('YYYY-MM-DD HH:MM:SS'),
-          dataAtendimento = moment(
-            atendimento.data_atendimento, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+    const dataAtendimento = moment().format('YYYY-MM-DD HH:mm:ss'),
+          dataAgendamento = moment(
+            atendimento.data_agendamento, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss');
+
+    const validacoes = [
+      { 
+        nome: 'data_agendamento',
+        valido: this._validaData(dataAtendimento, dataAgendamento),
+        mensagem: 'Data de agendamento deve ser maior ou igual a data atual', 
+      },
+      {
+        nome: 'nome_cliente',
+        valido: this._validaNomeCliente(atendimento.nome_cliente),
+        mensagem: 'Nome do cliente deve ter pelo menos cinco caracteres', 
+      },
+    ];
+    // Verifica se existe algum erro.
+    const erros = validacoes.filter((errObj) => !errObj.valido);
+
+    if (erros.length)
+      return {
+        existemErros: true,
+        data: erros,
+      };
 
     return {
-      ...atendimento,
-      data_agendamento: dataAgendamento,
-      data_atendimento: dataAtendimento,
+      existemErros: false,
+      data: {
+        ...atendimento,
+        data_atendimento: dataAtendimento,
+        data_agendamento: dataAgendamento,
+      },
     };
+  }
+
+  _validaData(atendimento, agendamento) {
+    return moment(agendamento).isSameOrAfter(atendimento);
+  }
+
+  _validaNomeCliente(nome) {
+    return nome.length >= 5;
   }
 }
 
