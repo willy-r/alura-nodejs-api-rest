@@ -17,4 +17,13 @@ module.exports = (app) => {
     
     Atendimento.add(atendimento, res);
   });
+
+  // Usa-se o método 'patch' quando a gente quer alterar
+  // apenas alguns valores de um objeto que já existe.
+  app.patch('/atendimento/:id/editar', (req, res) => {
+    const id = parseInt(req.params.id),
+          valores = req.body;
+
+    Atendimento.altera(id, valores, res);
+  }); 
 }

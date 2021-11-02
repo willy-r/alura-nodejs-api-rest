@@ -93,9 +93,29 @@ class Atendimento {
 
     conexao.query(query, id, (err, results) => {
       if (err)
-        res.status(404).json(err);
+        res.status(400).json(err);
       else
         res.status(200).json(results[0]);
+    });
+  }
+
+  altera(id, valores, res) {
+    if (valores.data_agendamento) {
+      valores.data_agendamento = moment(
+        valores.data_agendamento, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss');
+    }
+
+    const query = `
+      UPDATE atendimento
+      SET ?
+      WHERE id_atendimento = ?;
+    `;
+
+    conexao.query(query, [valores, id], (err, results) => {
+      if (err)
+        res.status(400).json(err);
+      else
+        res.status(200).json(results);
     });
   }
 }
