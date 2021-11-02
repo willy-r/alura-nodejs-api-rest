@@ -84,6 +84,20 @@ class Atendimento {
         res.status(200).json(results);
     });
   }
+
+  buscaPorId(id, res) {
+    const query = `
+      SELECT * FROM atendimento
+      WHERE id_atendimento = ?;
+    `;
+
+    conexao.query(query, id, (err, results) => {
+      if (err)
+        res.status(404).json(err);
+      else
+        res.status(200).json(results[0]);
+    });
+  }
 }
 
 module.exports = new Atendimento;
