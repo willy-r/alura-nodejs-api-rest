@@ -4,9 +4,9 @@ const Atendimento = require('../models/Atendimento');
 module.exports = (app) => {
   // req = requisição, o que tá vindo
   // res = resposta, o que tá indo
-  app.get('/atendimentos', (req, res) => res.send('Você está na rota de atendimentos, e está realizando um GET!'));
+  app.get('/atendimentos', (_, res) => Atendimento.lista(res));
 
-  app.post('/atendimentos', (req, res) => {
+  app.post('/atendimento/criar', (req, res) => {
     const atendimento = req.body;
     
     Atendimento.add(atendimento, res);

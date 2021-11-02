@@ -73,6 +73,17 @@ class Atendimento {
   _validaNomeCliente(nome) {
     return nome.length >= 5;
   }
+
+  lista(res) {
+    const query = 'SELECT * FROM atendimento;';
+
+    conexao.query(query, (err, results) => {
+      if (err)
+        res.status(400).json(err);
+      else
+        res.status(200).json(results);
+    });
+  }
 }
 
 module.exports = new Atendimento;
