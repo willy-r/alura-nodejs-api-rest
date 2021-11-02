@@ -12,7 +12,7 @@ module.exports = (app) => {
     Atendimento.buscaPorId(id, res);
   });
 
-  app.post('/atendimento/criar', (req, res) => {
+  app.post('/atendimentos', (req, res) => {
     const atendimento = req.body;
     
     Atendimento.add(atendimento, res);
@@ -20,10 +20,10 @@ module.exports = (app) => {
 
   // Usa-se o método 'patch' quando a gente quer alterar
   // apenas alguns valores de um objeto que já existe.
-  app.patch('/atendimento/:id/editar', (req, res) => {
+  app.patch('/atendimentos/:id', (req, res) => {
     const id = parseInt(req.params.id),
           valores = req.body;
 
     Atendimento.altera(id, valores, res);
-  }); 
+  });
 }
