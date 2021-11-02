@@ -18,7 +18,7 @@ class Atendimento {
         if (err) {
           res.status(400).json(err);
         } else {
-          res.status(201).json(results);
+          res.status(201).json(atendimento);
         }
       });
     }
@@ -111,11 +111,28 @@ class Atendimento {
       WHERE id_atendimento = ?;
     `;
 
-    conexao.query(query, [valores, id], (err, results) => {
+    conexao.query(query, [valores, id], (err) => {
       if (err)
         res.status(400).json(err);
       else
-        res.status(200).json(results);
+        res.status(200).json({...valores, id_alterado: id});
+    });
+  }
+
+  deleta(id, res) {
+    const query = `
+      DELETE FROM atendimento
+      WHERE id_atendimento = ?;
+    `;
+
+    conexao.query(query, id, (err, results) => {
+      if (err)
+        res.status(400).json(err);
+      else
+        res.status(200).json({
+          id_deletado: id,
+          msg: 'Atendimento deletado com sucesso',
+        });
     });
   }
 }
