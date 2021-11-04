@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const customExpress = require('./config/customExpress');
 const conexao = require('./db/conexao');
 const Tabelas = require('./db/Tabelas');
@@ -15,7 +17,7 @@ conexao.connect((err) => {
     Tabelas.init(conexao);
     
     const app = customExpress();
-    const PORT = 3000;
+    const PORT = process.env.SERVER_PORT || 3000;
 
     app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
   }

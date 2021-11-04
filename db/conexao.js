@@ -2,11 +2,11 @@ const mysql2 = require('mysql2');
 
 // Configura a conexão do banco de dados.
 const conexao = mysql2.createConnection({
-  host: 'localhost',
-  port: 2442,
-  user: 'root',
-  password: '1234',
-  database: 'agenda_petshop',
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 module.exports = conexao;
