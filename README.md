@@ -5,6 +5,23 @@ Anotações e código do curso [Rest com NodeJS: API REST com Express e MySQL](h
 Com esse curso foi ensinado o básico sobre como tratar algumas requisições como **GET**, **POST**, **PATCH**, **DELETE**. Além de ensinar como usar o MySQL como banco de dados principal para a aplicação. Com isso foi possível construir uma aplicação API REST usando CRUD para os atendimentos de um Pet Shop.
 
 
+## Variáveis de ambiente
+
+Para rodar o projeto localmente corretamente, é necessário adicionar algumas variáveis de ambiente no seu arquivo `.env`.
+
+#### Banco de dados
+
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+
+#### Servidor, etc
+
+- `PORT`
+
+
 ## API Rotas
 
 Rotas cadastradas para fazer requisições:
